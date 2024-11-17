@@ -1,4 +1,6 @@
-# The Best Project Setup
+# Scrolling Horde
+
+A facebook clone made for learning purposes.
 
 > Preferably used within `Linux` or `WSL 2` systems, not tested on `windows` or `mac`.
 
@@ -6,9 +8,7 @@
 
 - Frontend :
 
-  - React
-  - React DOM
-  - React Router DOM
+  - Remix
   - Vite
   - Shadcn ui
   - Unocss
