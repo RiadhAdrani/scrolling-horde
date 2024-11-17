@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "database": "ecommerce-remix-hono-db",
+      "username": "ecommerce-remix-hono-user",
+      "password": "ecommerce-remix-hono-db-pswd",
+      "name": "ecommerce-remix-hono"
+    }
+  ]
+}

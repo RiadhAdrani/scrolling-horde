@@ -1,0 +1,206 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+enum TokenSubject {
+  Authentication
+  ResetPassword
+  EmailInvitation
+}
+
+enum Theme {
+  Dark
+  Light
+}
+
+enum InvitationStatus {
+  Pending
+  Accepted
+  Rejected
+}
+
+enum FileType {
+  Image
+  Video
+}
+
+enum ReactionType {
+  Like
+  Love
+  Angry
+  Funny
+  Sad
+  Amazed
+}
+
+enum NotificationType {
+  Reacted
+  Commented
+  Replied
+  Tagged
+  Posted
+}
+
+model User {
+  id String @id @default(cuid())
+
+  email    String @unique
+  password String
+
+  firstname String
+  lastname  String
+
+  theme Theme @default(Light)
+
+  activatedAt DateTime?
+
+  tokens Token[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  posts         Post[]
+  notifications Notification[] @relation("recipient")
+
+  subjects Notification[]
+}
+
+model Token {
+  id String @id @default(cuid())
+
+  value   String
+  subject TokenSubject
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Post {
+  id String @id @default(cuid())
+
+  content String @default("")
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  original   Post?   @relation("original", fields: [originalId], references: [id])
+  originalId String?
+
+  current   Post?   @relation("current", fields: [currentId], references: [id])
+  currentId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  shares    Post[]     @relation("original")
+  versions  Post[]     @relation("current")
+  assets    Asset[]
+  reactions Reaction[]
+  comments  Comment[]
+  saves     Save[]
+
+  subjects Notification[]
+}
+
+model File {
+  id String @id @default(cuid())
+
+  type FileType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  postAssets Asset[]
+}
+
+model Asset {
+  id String @id @default(cuid())
+
+  file   File   @relation(fields: [fileId], references: [id])
+  fileId String
+
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+
+  createdAt DateTime @default(now())
+}
+
+model Reaction {
+  id String @id @default(cuid())
+
+  type ReactionType
+
+  post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
+
+  comment    Comment? @relation(fields: [commentsId], references: [id])
+  commentsId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  subjects Notification[]
+}
+
+model Comment {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  content String
+
+  current   Comment? @relation("current", fields: [currentId], references: [id])
+  currentId String?
+
+  parent   Comment? @relation("reply", fields: [parentId], references: [id])
+  parentId String?
+
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+
+  reactions    Reaction[]
+  versions     Comment[]      @relation("current")
+  replies      Comment[]      @relation("reply")
+  Notification Notification[]
+}
+
+model Save {
+  id String @id @default(cuid())
+
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Notification {
+  id String @id @default(cuid())
+
+  type NotificationType
+
+  recipient   User   @relation("recipient", fields: [recipientId], references: [id])
+  recipientId String
+
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId String?
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  reaction   Reaction? @relation(fields: [reactionId], references: [id])
+  reactionId String?
+
+  post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
+}
