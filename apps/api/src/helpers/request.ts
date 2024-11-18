@@ -52,7 +52,6 @@ export const $transformError = (err: Error): FailedResponse => {
   }
 
   if (err instanceof ZodError) {
-    // we just return the first issue
     obj.messages = [{ code: 'invalid-data' }];
     obj.status = httpStatus.UNPROCESSABLE_ENTITY;
   } else if (err instanceof ApiError) {

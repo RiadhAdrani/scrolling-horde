@@ -29,19 +29,20 @@ const findByEmail = async <B extends boolean>(
   return user as User;
 };
 
-const findByEmailAndPassword = async <B extends boolean>(
-  email: string,
-  password: string,
-  doThrow?: B,
-): Promise<B extends true ? User : User | undefined> => {
-  const user = await $prisma.user.findFirst({ where: { email: email, password } });
-
-  if (!user && doThrow) {
-    throw $error(httpStatus.UNAUTHORIZED, 'users.notFound');
-  }
-
-  return user as User;
-};
+const createOne = async (data: Pick<User, 'email' | 'firstname' | 'lastname' | 'password'>) =>
+  $prisma.user.create({
+    data,
+    select: {
+      activatedAt: true,
+      createdAt: true,
+      email: true,
+      firstname: true,
+      lastname: true,
+      id: true,
+      theme: true,
+      updatedAt: true,
+    },
+  });
 
 const updateOne = async (
   id: string,
@@ -52,9 +53,10 @@ const $user = {
   findOne: {
     byId: findById,
     byEmail: findByEmail,
-    byEmailAndPassword: findByEmailAndPassword,
   },
-  create: {},
+  create: {
+    one: createOne,
+  },
   update: {
     one: updateOne,
   },

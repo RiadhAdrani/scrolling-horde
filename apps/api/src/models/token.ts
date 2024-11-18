@@ -7,6 +7,9 @@ import { error } from 'console';
 import { sign, verify } from 'hono/jwt';
 import { JwtTokenExpired } from 'hono/utils/jwt/types';
 
+const secret = $env('API_SECRET');
+const algorithm = 'HS256';
+
 export type TokenPayload<T extends object = object> = {
   sub: TokenSubject;
   userId: string;
@@ -22,7 +25,7 @@ const createOne = async (data: Pick<Token, 'expiresAt' | 'subject' | 'userId'>) 
     userId: data.userId,
   };
 
-  const value = await sign(payload, $env('API_SECRET'), 'HS256');
+  const value = await sign(payload, secret, algorithm);
 
   const token = await $prisma.token.create({ data: { ...data, value } });
 
@@ -55,7 +58,7 @@ const verifyToken = async (token: string) => {
   let payload: TokenPayload;
 
   try {
-    payload = (await verify(token, $env('API_SECRET'), 'HS256')) as TokenPayload;
+    payload = (await verify(token, secret, algorithm)) as TokenPayload;
   } catch {
     if (error instanceof JwtTokenExpired) {
       throw $error(httpStatus.UNAUTHORIZED, 'token.expired');
@@ -69,11 +72,10 @@ const verifyToken = async (token: string) => {
   const exists = await findByValue(token, true);
 
   if (
-    new Date(exists.expiresAt) !== new Date(payload.exp) ||
+    new Date(exists.expiresAt).getTime() !== new Date(payload.exp).getTime() ||
     exists.subject !== sub ||
     exists.userId !== userId ||
-    exists.value !== token ||
-    exists.expiresAt < new Date()
+    new Date(exists.expiresAt).getTime() < new Date().getTime()
   ) {
     throw $error(httpStatus.UNAUTHORIZED, 'token.invalid');
   }

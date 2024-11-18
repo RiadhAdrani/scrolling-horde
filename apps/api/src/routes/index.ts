@@ -7,6 +7,8 @@ import extractMiddleware from '@middlewares/user.js';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import notFound from './not-found.js';
+import users from './users.js';
+import tokens from './tokens.js';
 
 const port = Number($env('API_PORT'));
 const url = $env('API_URL');
@@ -22,6 +24,8 @@ export const startHono = async () => {
     .basePath('/api')
 
     // end points
+    .route('/users', users)
+    .route('/tokens', tokens)
 
     // catching all remaining routes
     .route('*', notFound);
