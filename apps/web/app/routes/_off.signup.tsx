@@ -3,6 +3,7 @@ import { Form, json, Link, redirect, useActionData } from '@remix-run/react';
 import type { FailedResponse, SuccessResponse } from '@shared-types/request';
 import type { SignUpResponse } from '@shared-types/user';
 import axios, { AxiosError } from 'axios';
+import FormLabel from '~/components/app/form-label';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
@@ -63,13 +64,25 @@ export default function Index() {
       <Card>
         <CardHeader>
           <CardTitle>Signup</CardTitle>
-          <CardDescription>Signup to Scrolling Horde</CardDescription>
+          <CardDescription>Get started with Scrolling Horde</CardDescription>
         </CardHeader>
-        <CardContent className='flex flex-col gap-2'>
-          <Input placeholder='Email' type='email' name='email' />
-          <Input placeholder='Password' type='password' name='password' />
-          <Input placeholder='First name' type='text' name='firstname' />
-          <Input placeholder='Last name' type='text' name='lastname' />
+        <CardContent className='flex flex-col gap-4'>
+          <FormLabel>
+            <span>Email</span>
+            <Input placeholder='Email' type='email' name='email' />
+          </FormLabel>
+          <FormLabel>
+            <span>Password</span>
+            <Input placeholder='Password' type='password' name='password' />
+          </FormLabel>
+          <FormLabel>
+            <span>First name</span>
+            <Input placeholder='First name' type='text' name='firstname' />
+          </FormLabel>
+          <FormLabel>
+            <span>Last name</span>
+            <Input placeholder='Last name' type='text' name='lastname' />
+          </FormLabel>
           <Link to={'/signin'} className='w-full'>
             <Button className='w-full' variant={'ghost'}>
               Already have an account
