@@ -7,7 +7,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const user = useMatchesData<PublicUserData>('routes/_on');
+  const user = useMatchesData<PublicUserData>('/_on');
 
   return <></>;
 }
