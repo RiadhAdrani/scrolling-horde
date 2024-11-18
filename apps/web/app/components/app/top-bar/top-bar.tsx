@@ -1,22 +1,21 @@
-import { Form, Link } from '@remix-run/react';
-import { Button } from '../../ui/button';
+import { Link } from '@remix-run/react';
 import { useMemo } from 'react';
-import { Avatar, AvatarFallback } from '../../ui/avatar';
-import useMatchesData from '~/hooks/use-matches-data';
-import { PublicUserData } from '@shared/types/user';
-import UserAvatar from './user-avatar';
-import Notifications from './notification';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import { Button } from '../../ui/button';
 import IconLogo from '../common/icon-logo';
 import Messages from './messages';
+import Notifications from './notification';
+import UserAvatar from './user-avatar';
 
 export default function TopBar() {
   const middle = useMemo(
     () =>
       [
-        { icon: 'i-mdi-book-open-page-variant', label: 'Home', path: '/' },
-        { icon: 'i-mdi-magnify', label: 'Search', path: '/search' },
-        { icon: 'i-mdi-video', label: 'Videos', path: '/videos' },
-        { icon: 'i-mdi-shopping', label: 'Marketplace', path: '/marketplace' },
+        { icon: 'i-solar-feed-broken', label: 'Home', path: '/' },
+        { icon: 'i-solar-magnifer-linear', label: 'Search', path: '/search' },
+        { icon: 'i-solar-video-frame-play-horizontal-outline', label: 'Videos', path: '/videos' },
+        { icon: 'i-solar-users-group-two-rounded-broken', label: 'Groups', path: '/groups' },
+        { icon: 'i-solar-shop-2-broken', label: 'Marketplace', path: '/marketplace' },
       ] as const,
     [],
   );
@@ -28,17 +27,24 @@ export default function TopBar() {
           <div className='flex-1 flex flex-row items-center justify-start gap-2'>
             <Link to={'/'}>
               <Button variant={'ghost'}>
-                <IconLogo />
+                <IconLogo style={{ fontSize: '2em' }} />
               </Button>
             </Link>
           </div>
           <div className='flex-1 flex flex-row items-center gap-2 justify-center'>
             {middle.map((item, index) => (
-              <Link key={index} to={item.path}>
-                <Button variant={'secondary'}>
-                  <i className={item.icon} />
-                </Button>
-              </Link>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Link key={index} to={item.path}>
+                      <Button variant={'ghost'}>
+                        <i className={item.icon} />
+                      </Button>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>{item.label}</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ))}
           </div>
           <div className='flex-1 flex flex-row gap-2 justify-end'>

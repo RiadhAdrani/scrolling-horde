@@ -17,17 +17,17 @@ export default function Messages() {
         <DropdownMenuTrigger>
           <Avatar>
             <AvatarFallback>
-              <i className='i-mdi-message' />
+              <i className='i-solar-chat-round-dots-broken' />
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className='w-80 mr-5'>
           <DropdownMenuLabel className='flex flex-row items-center gap-2'>
-            <Icon icon='i-mdi-message' /> Messages
+            <Icon icon='i-solar-chat-round-dots-broken' /> Messages
           </DropdownMenuLabel>
           <DropdownMenuItem className='h-80 flex flex-col items-center justify-center'>
             <H2>
-              <Icon icon='i-mdi-magnify' />
+              <Icon icon='i-solar-magnifer-linear' />
             </H2>
             <H4>It's empty here...</H4>
             <Button>Start a conversation with someone</Button>

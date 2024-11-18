@@ -16,17 +16,17 @@ export default function Notifications() {
         <DropdownMenuTrigger>
           <Avatar>
             <AvatarFallback>
-              <i className='i-mdi-bell' />
+              <i className='i-solar-bell-broken' />
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className='w-80 mr-5'>
           <DropdownMenuLabel className='flex flex-row items-center gap-2'>
-            <Icon icon='i-mdi-bell' /> Notifications
+            <Icon icon='i-solar-bell-broken' /> Notifications
           </DropdownMenuLabel>
           <DropdownMenuItem className='h-80 flex flex-col items-center justify-center'>
             <H2>
-              <Icon icon='i-mdi-magnify' />
+              <Icon icon='i-solar-magnifer-linear' />
             </H2>
             <H4>You are all up to date!</H4>
             <Muted>No unread notifications.</Muted>

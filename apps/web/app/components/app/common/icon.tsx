@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type IconName = `i-mdi-${string}`;
+export type IconName = `i-mdi-${string}` | `i-solar-${string}` | `i-tabler-${string}`;
 
 export interface IconProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
   icon: IconName;
