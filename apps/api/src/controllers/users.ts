@@ -18,6 +18,8 @@ export const signup = async (_body: SignUpBody) => {
     throw $error(httpStatus.CONFLICT, 'users.emailUsed');
   }
 
+  body.password = await $password.hash(body.password);
+
   const user = await $user.create.one(body);
 
   const token = await $token.create.one({

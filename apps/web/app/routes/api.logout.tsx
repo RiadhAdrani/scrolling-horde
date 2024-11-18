@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { redirect } from '@remix-run/node';
 import { userCookies } from '~/cookies.server';
 
 export async function loader() {

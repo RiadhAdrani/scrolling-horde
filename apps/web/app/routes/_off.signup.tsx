@@ -70,10 +70,16 @@ export default function Index() {
           <Input placeholder='Password' type='password' name='password' />
           <Input placeholder='First name' type='text' name='firstname' />
           <Input placeholder='Last name' type='text' name='lastname' />
-          <Link to={'/signin'}>Already have an account</Link>
+          <Link to={'/signin'} className='w-full'>
+            <Button className='w-full' variant={'ghost'}>
+              Already have an account
+            </Button>
+          </Link>
         </CardContent>
-        <CardFooter>
-          <Button type='submit'>Signup</Button>
+        <CardFooter className='w-full'>
+          <Button className='w-full' type='submit'>
+            Signup
+          </Button>
         </CardFooter>
       </Card>
     </Form>
