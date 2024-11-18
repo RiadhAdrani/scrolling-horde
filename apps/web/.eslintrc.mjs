@@ -1,4 +1,4 @@
-import path from 'path';
+const path = require('path');
 
 /**
  * This is intended to be a basic starting point for linting in your app.
@@ -21,7 +21,15 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  ignorePatterns: ['!**/.server', '!**/.client'],
+  ignorePatterns: [
+    '!**/.server',
+    '!**/.client',
+    '!.eslintrc.mjs',
+    'uno.config.ts',
+    'vite.config.ts',
+    'tailwind.config.ts',
+    'postcss.config.cjs',
+  ],
 
   // Base config
   extends: ['eslint:recommended'],

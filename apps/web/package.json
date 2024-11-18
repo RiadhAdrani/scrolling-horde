@@ -7,7 +7,7 @@
     "dev": "remix vite:dev --config vite.config.ts",
     "build": "remix vite:build --config vite.config.ts",
     "start": "remix-serve ./build/server/index.js",
-    "lint:check": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint:check": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint",
     "types:check": "tsc",
     "format:check": "npx prettier --check ."
   },
