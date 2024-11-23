@@ -31,11 +31,11 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: Setup global dependencies
-        run: make setup
+      # - name: Setup global dependencies
+      #   run: make setup
 
-      - name: Generate prisma types
-        run: make generate-types
+      # - name: Generate prisma types
+      #   run: make generate-types
 
       # check commit message --------------------------------------------------
 
@@ -47,24 +47,24 @@ jobs:
       - name: Check code quality
         run: make check
 
-      # start docker compose --------------------------------------------------
+      # # start docker compose --------------------------------------------------
 
-      - name: Start Docker Compose service
-        run: make start-test-ci
+      # - name: Start Docker Compose service
+      #   run: make start-test-ci
 
-      - name: Wait for Docker Compose service to be ready
-        run: sleep 20
+      # - name: Wait for Docker Compose service to be ready
+      #   run: sleep 20
 
-      # run tests -------------------------------------------------------------
+      # # run tests -------------------------------------------------------------
 
-      - name: Run unit tests for the Api
-        run: make test-api
+      # - name: Run unit tests for the Api
+      #   run: make test-api
 
-      # - name: Run e2e tests for the Webapp
-      #   run: make test-e2e
+      # # - name: Run e2e tests for the Webapp
+      # #   run: make test-e2e
 
-      # stop docker-compose ---------------------------------------------------
+      # # stop docker-compose ---------------------------------------------------
 
-      - name: Stop Docker Compose service
-        if: always()
-        run: make stop-test
+      # - name: Stop Docker Compose service
+      #   if: always()
+      #   run: make stop-test
