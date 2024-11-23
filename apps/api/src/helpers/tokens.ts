@@ -18,7 +18,7 @@ export type TokenPayload<T extends object = object> = {
   iat?: number;
 } & T;
 
-const createOne = async (data: Pick<Token, 'expiresAt' | 'subject' | 'userId'>) => {
+export const createToken = async (data: Pick<Token, 'expiresAt' | 'subject' | 'userId'>) => {
   const payload: TokenPayload = {
     exp: data.expiresAt.getTime(),
     sub: data.subject,
@@ -32,16 +32,14 @@ const createOne = async (data: Pick<Token, 'expiresAt' | 'subject' | 'userId'>) 
   return token;
 };
 
-const deleteOne = async (id: string) => $prisma.token.delete({ where: { id } });
+export const deleteToken = async (value: string) => $prisma.token.deleteMany({ where: { value } });
 
-const deleteByValue = async (value: string) => $prisma.token.deleteMany({ where: { value } });
+export const deleteTokensByUser = async (userId: string) => $prisma.token.deleteMany({ where: { userId } });
 
-const deleteByUser = async (userId: string) => $prisma.token.deleteMany({ where: { userId } });
-
-const deleteByUserAndSubject = async (userId: string, subject: TokenSubject) =>
+export const deleteByUserAndSubject = async (userId: string, subject: TokenSubject) =>
   $prisma.token.deleteMany({ where: { userId, subject } });
 
-const findByValue = async <B extends boolean>(
+export const findToken = async <B extends boolean>(
   value: string,
   doThrow?: B,
 ): Promise<B extends true ? Token : Token | undefined> => {
@@ -54,7 +52,7 @@ const findByValue = async <B extends boolean>(
   return token as Token;
 };
 
-const verifyToken = async (token: string) => {
+export const verifyToken = async (token: string) => {
   let payload: TokenPayload;
 
   try {
@@ -69,7 +67,7 @@ const verifyToken = async (token: string) => {
 
   const { userId, sub } = payload;
 
-  const exists = await findByValue(token, true);
+  const exists = await findToken(token, true);
 
   if (
     new Date(exists.expiresAt).getTime() !== new Date(payload.exp).getTime() ||
@@ -82,21 +80,3 @@ const verifyToken = async (token: string) => {
 
   return payload;
 };
-
-const $token = {
-  create: {
-    one: createOne,
-  },
-  delete: {
-    byId: deleteOne,
-    byValue: deleteByValue,
-    byUser: deleteByUser,
-    byUserAndSubject: deleteByUserAndSubject,
-  },
-  find: {
-    byValue: findByValue,
-  },
-  verify: verifyToken,
-};
-
-export default $token;

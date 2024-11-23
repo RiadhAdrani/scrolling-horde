@@ -1,9 +1,14 @@
-import type { User } from './prisma.js';
+import type { User, Post, Followship } from './prisma.js';
 
-export type PublicUserData = Pick<
-  User,
-  'activatedAt' | 'createdAt' | 'email' | 'firstname' | 'lastname' | 'id' | 'theme' | 'updatedAt'
->;
+export type PublicUserData = Pick<User, 'createdAt' | 'email' | 'firstname' | 'lastname' | 'id' | 'theme'>;
+
+export type PublicUserProfileData = PublicUserData & {
+  posts: Array<Post>;
+  friends: {
+    users: Array<PublicUserData>;
+    count: number;
+  };
+};
 
 export type SignUpBody = Pick<User, 'email' | 'firstname' | 'lastname' | 'password'>;
 export type SignUpResponse = { user: PublicUserData; token: string };

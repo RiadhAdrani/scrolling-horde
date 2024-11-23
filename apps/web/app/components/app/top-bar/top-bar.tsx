@@ -22,7 +22,7 @@ export default function TopBar() {
 
   return (
     <>
-      <div className='absolute top-0 right-0 w-screen h-16 bg-slate-200 shadow-xl overflow-hidden'>
+      <div className='absolute top-0 right-0 w-screen h-16 bg-slate-200 shadow-xl overflow-hidden z-10'>
         <div className='size-full flex flex-row items-center px-16 py-2 gap-4'>
           <div className='flex-1 flex flex-row items-center justify-start gap-2'>
             <Link to={'/'}>
@@ -31,7 +31,7 @@ export default function TopBar() {
               </Button>
             </Link>
           </div>
-          <div className='flex-1 flex flex-row items-center gap-2 justify-center'>
+          <div className='flex-1 flex flex-row items-center gap-8 justify-center'>
             {middle.map((item, index) => (
               <TooltipProvider>
                 <Tooltip>

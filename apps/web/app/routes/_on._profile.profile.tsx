@@ -4,6 +4,7 @@ import ResponsiveContainer from '~/components/app/common/responsive-container';
 import { H2, Muted } from '~/components/app/common/typography';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
+import { Tabs, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
 import useMatchesData from '~/hooks/use-matches-data';
 import profile from '~/lib/profile';
@@ -51,11 +52,29 @@ export default function Profile() {
               </TooltipProvider>
             </div>
           </div>
-          <div className='flex flex-col justify-center'>
+          <div className='flex flex-col justify-center w-full pt-4 pr-4'>
             <H2 className='h-[40px]'>{profile(user).fullname()}</H2>
             <Muted className='h-[40px] pt-2'>0 friends</Muted>
+            <div className='flex flex-row items-end justify-end w-full gap-2'>
+              <Button variant={'secondary'}>
+                <Icon icon='i-solar-pen-linear' /> Edit profile
+              </Button>
+              <Button variant={'secondary'} size={'icon'}>
+                <Icon icon='i-solar-menu-dots-bold' />
+              </Button>
+            </div>
           </div>
         </div>
+        <Tabs className='mt-10'>
+          <TabsList>
+            <TabsTrigger value='posts'>Posts</TabsTrigger>
+            <TabsTrigger value='about'>About</TabsTrigger>
+            <TabsTrigger value='friends'>Friends</TabsTrigger>
+            <TabsTrigger value='Photo'>Photo</TabsTrigger>
+            <TabsTrigger value='Videos'>Videos</TabsTrigger>
+            <TabsTrigger value='Likes'>Likes</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </ResponsiveContainer>
     </>
   );

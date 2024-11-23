@@ -1,7 +1,6 @@
 import { AUTHORIZATION, AUTHORIZATION_BEARER } from '@const/index.js';
-import { $logger } from '@helpers/logger.js';
-import $token from '@models/token.js';
-import $user from '@models/user.js';
+import { verifyToken } from '@helpers/tokens.js';
+import { findUserById } from '@helpers/users.js';
 import { User } from '@prisma/client';
 import { MiddlewareHandler } from 'hono';
 
@@ -20,11 +19,9 @@ const userMiddleware: MiddlewareFn = async (ctx, next) => {
 
     // verify token
     try {
-      const { userId } = await $token.verify(token);
+      const { userId } = await verifyToken(token);
 
-      $logger.info(userId, 'current userid');
-
-      const user = await $user.findOne.byId(userId);
+      const user = await findUserById(userId);
 
       if (user) {
         ctx.set('user', user);

@@ -1,10 +1,10 @@
 import { $error } from '@helpers/errors.js';
 import { $success } from '@helpers/request.js';
 import httpStatus from '@helpers/status.js';
-import $token from '@models/token.js';
+import { findToken } from '@helpers/tokens.js';
 
 export const checkToken = async (value: string) => {
-  const token = await $token.find.byValue(value, true);
+  const token = await findToken(value, true);
 
   // check if token is valid and not expired
   if (token.expiresAt && token.expiresAt < new Date()) {

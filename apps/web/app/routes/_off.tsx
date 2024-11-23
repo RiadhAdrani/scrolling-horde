@@ -1,26 +1,22 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node';
-import { Form, Link, Outlet, useLoaderData } from '@remix-run/react';
+import { Outlet } from '@remix-run/react';
 import { SuccessResponse } from '@shared/types/request';
 import { PublicUserData } from '@shared/types/user';
-import axios from 'axios';
 import { redirect } from 'react-router';
-import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
 import { userCookies } from '~/cookies.server';
+import $api, { getUserTokenCookie } from '~/lib/api';
 
 export async function loader(data: LoaderFunctionArgs) {
-  const raw = data.request.headers.get('Cookie');
+  const cookie = await getUserTokenCookie(data.request);
 
   let response: unknown = json('ok');
-
-  const cookie = await userCookies.parse(raw);
 
   if (!cookie) {
     return response;
   }
 
   try {
-    const res = await axios.get<SuccessResponse<PublicUserData>>('http://localhost:8888/api/users/me', {
+    const res = await $api.get<SuccessResponse<PublicUserData>>('/api/users/me', {
       headers: {
         Authorization: `Bearer ${cookie}`,
       },

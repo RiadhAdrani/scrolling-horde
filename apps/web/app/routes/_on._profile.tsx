@@ -1,4 +1,4 @@
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import { json, LoaderFunctionArgs, TypedResponse } from '@remix-run/node';
 import { Form, Link, Outlet, useLoaderData } from '@remix-run/react';
 import { SuccessResponse } from '@shared/types/request';
 import { PublicUserData } from '@shared/types/user';
@@ -8,22 +8,25 @@ import TopBar from '~/components/app/top-bar/top-bar';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { userCookies } from '~/cookies.server';
+import $api, { getUserTokenCookie } from '~/lib/api';
 
 export async function loader(data: LoaderFunctionArgs) {
-  const raw = data.request.headers.get('Cookie');
+  let response: TypedResponse<unknown> = json(undefined);
 
-  let response: unknown = redirect('/signin');
-
-  const cookie = await userCookies.parse(raw);
-
+  const cookie = await getUserTokenCookie(data.request);
   if (!cookie) {
     return response;
   }
 
+  const slug = data.params.slug;
+
   try {
-    const res = await axios.get<SuccessResponse<PublicUserData>>('http://localhost:8888/api/users/me', {
+    const res = await $api.get<SuccessResponse<PublicUserData>>('/api/users/profile', {
       headers: {
         Authorization: `Bearer ${cookie}`,
+      },
+      params: {
+        slug,
       },
     });
 
@@ -35,7 +38,7 @@ export async function loader(data: LoaderFunctionArgs) {
   return response;
 }
 
-export default function AuthGuard() {
+export default function Profile() {
   const data = useLoaderData<SuccessResponse<PublicUserData>>();
 
   return (
