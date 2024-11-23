@@ -3,7 +3,7 @@ import { Followship } from '@prisma/client';
 import { $error } from './errors.js';
 import httpStatus from './status.js';
 
-export const findFollowship = async <B extends boolean>(
+export const findFollowshipById = async <B extends boolean>(
   user1: string,
   user2: string,
   doThrow?: B,

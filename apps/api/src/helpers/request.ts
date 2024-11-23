@@ -12,8 +12,8 @@ import { ZodError } from 'zod';
 import { Arrayable } from 'vitest';
 import $env from '@cfg/config.js';
 
-export const $success = <T = unknown>(
-  data: T,
+export const $success = <T = true>(
+  data: T = true as T,
   message?: Arrayable<string | ApiMessage>,
   status: number = httpStatus.OK,
 ): SuccessResponse<T> => {

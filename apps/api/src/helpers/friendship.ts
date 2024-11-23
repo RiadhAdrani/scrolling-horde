@@ -3,7 +3,7 @@ import { Friendship } from '@prisma/client';
 import { $error } from './errors.js';
 import httpStatus from './status.js';
 
-export const findFriendship = async <B extends boolean>(
+export const findFriendshipById = async <B extends boolean>(
   user1Id: string,
   user2Id: string,
   doThrow?: B,

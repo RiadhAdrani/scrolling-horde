@@ -3,6 +3,7 @@ import authMiddleware, { AuthContextData } from '@middlewares/auth.js';
 import { Hono } from 'hono';
 import friendships from './friendship.js';
 import followships from './followship.js';
+import posts from './posts.js';
 
 const users = new Hono();
 const me = new Hono<{ Variables: AuthContextData }>();
@@ -14,6 +15,7 @@ me.use(authMiddleware);
 me.get('/', async ctx => ctx.json(await getMe(ctx.get('user'))));
 me.route('/friendships', friendships);
 me.route('/followships', followships);
+me.route('/posts', posts);
 
 users.route('/me', me);
 
