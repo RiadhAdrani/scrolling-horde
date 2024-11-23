@@ -1,12 +1,14 @@
 import { acceptFriendship, removeFriendship, requestFriendship } from '@controllers/friendship.js';
-import friendshipTargetMiddleware from '@middlewares/friendship-target.js';
+import optionalFriendshipMiddleware from '@middlewares/friendship-target.js';
 import friendshipMiddleware from '@middlewares/friendship.js';
+import targetUserMiddleware from '@middlewares/target-user.js';
 import { Hono } from 'hono';
 
 const friendships = new Hono();
 
 const target = new Hono()
-  .use(friendshipTargetMiddleware)
+  .use(targetUserMiddleware)
+  .use(optionalFriendshipMiddleware)
   .post('/', async ctx => ctx.json(await requestFriendship(ctx.get('user'), ctx.get('target'), ctx.get('friendship'))));
 
 const friendship = new Hono()
