@@ -43,3 +43,13 @@ export const deleteComment = async (user: User, comment: Comment) => {
 
   return $success();
 };
+
+export const createReply = async (user: User, comment: Comment, post: Post, _body: CreateCommentBody) => {
+  const body = commentValidators.create.parse(_body);
+
+  const reply = await $prisma.comment.create({
+    data: { content: body.text, authorId: user.id, postId: post.id, parentId: comment.id },
+  });
+
+  return $success(reply);
+};

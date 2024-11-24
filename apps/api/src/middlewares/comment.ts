@@ -17,8 +17,8 @@ const commentMiddleware: MiddlewareFn = async (ctx, next) => {
     throw $error(httpStatus.NOT_FOUND, 'comments.notFound');
   }
 
-  const post = await findCommentById(id, true);
-  ctx.set('comment', post);
+  const comment = await findCommentById(id, true);
+  ctx.set('comment', comment);
 
   await next();
 };
