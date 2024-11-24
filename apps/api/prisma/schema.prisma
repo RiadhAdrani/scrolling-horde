@@ -75,6 +75,7 @@ model User {
   friendshipTo   Friendship[]   @relation("friendship-to")
   comments       Comment[]
   reactions      Reaction[]
+  saves          Save[]
 }
 
 model Followship {
@@ -232,6 +233,9 @@ model Save {
 
   post   Post   @relation(fields: [postId], references: [id])
   postId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

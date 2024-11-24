@@ -63,3 +63,9 @@ export const sharePost = async (user: User, post: Post, _body: SharePostBody) =>
 
   return $success(shared);
 };
+
+export const savePost = async (user: User, post: Post) => {
+  await $prisma.save.create({ data: { userId: user.id, postId: post.id } });
+
+  return $success();
+};
