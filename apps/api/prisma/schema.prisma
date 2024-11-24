@@ -60,22 +60,20 @@ model User {
 
   activatedAt DateTime?
 
-  tokens Token[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  posts         Post[]
-  notifications Notification[] @relation("recipient")
-
-  subjects Notification[]
-
-  following      Followship[] @relation("following")
-  followers      Followship[] @relation("follower")
-  blocked        Block[]      @relation("blocker")
-  blockedBy      Block[]      @relation("blocked")
-  friendshipFrom Friendship[] @relation("friendship-from")
-  friendshipTo   Friendship[] @relation("friendship-to")
+  tokens         Token[]
+  posts          Post[]
+  notifications  Notification[] @relation("recipient")
+  subjects       Notification[]
+  following      Followship[]   @relation("following")
+  followers      Followship[]   @relation("follower")
+  blocked        Block[]        @relation("blocker")
+  blockedBy      Block[]        @relation("blocked")
+  friendshipFrom Friendship[]   @relation("friendship-from")
+  friendshipTo   Friendship[]   @relation("friendship-to")
+  comments       Comment[]
 }
 
 model Followship {
@@ -201,6 +199,9 @@ model Reaction {
 
 model Comment {
   id String @id @default(cuid())
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
