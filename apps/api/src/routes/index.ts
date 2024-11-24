@@ -1,9 +1,7 @@
 import $env from '@cfg/config.js';
 import { $logger } from '@helpers/logger.js';
 import { serve } from '@hono/node-server';
-import errorHandler from '@middlewares/error.js';
-import loggerMiddleware from '@middlewares/logger.js';
-import extractMiddleware from '@middlewares/user.js';
+import { errorMiddleware, loggerMiddleware, userMiddleware } from '@middlewares/index.js';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import notFound from './not-found.js';
@@ -18,9 +16,9 @@ export const startHono = async () => {
 
   app
     // loggers and middlewares
-    .use('*', loggerMiddleware, extractMiddleware)
+    .use('*', loggerMiddleware, userMiddleware)
     .use('*', cors())
-    .onError(errorHandler)
+    .onError(errorMiddleware)
     .basePath('/api')
 
     // end points
@@ -29,8 +27,6 @@ export const startHono = async () => {
 
     // catching all remaining routes
     .route('*', notFound);
-
-  app.onError(errorHandler);
 
   $logger.info(`started Hono server on url : ${url}`);
 

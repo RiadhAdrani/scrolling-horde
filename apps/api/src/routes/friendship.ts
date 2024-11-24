@@ -1,7 +1,6 @@
 import { acceptFriendship, removeFriendship, requestFriendship } from '@controllers/friendship.js';
-import optionalFriendshipMiddleware from '@middlewares/friendship-target.js';
-import friendshipMiddleware from '@middlewares/friendship.js';
-import targetUserMiddleware from '@middlewares/target-user.js';
+import { targetUserMiddleware, friendshipMiddleware, optionalFriendshipMiddleware } from '@middlewares/index.js';
+
 import { Hono } from 'hono';
 
 const friendships = new Hono();

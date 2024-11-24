@@ -1,5 +1,5 @@
 import { followUser, unfollowUser } from '@controllers/followship.js';
-import targetUserMiddleware from '@middlewares/target-user.js';
+import { targetUserMiddleware } from '@middlewares/index.js';
 import { Hono } from 'hono';
 
 const followships = new Hono().post('/');

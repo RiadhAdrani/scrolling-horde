@@ -1,17 +1,15 @@
-import { MiddlewareHandler } from 'hono';
+import { $error } from '@helpers/errors.js';
+import { findPostById } from '@helpers/posts.js';
+import httpStatus from '@helpers/status.js';
 import { Post } from '@prisma/client';
 import { AuthContextData } from './auth.js';
-import { $error } from '@helpers/errors.js';
-import httpStatus from '@helpers/status.js';
-import { findPostById } from '@helpers/posts.js';
+import { MiddlewareHandlerFunction } from './type.js';
 
 export type PostContextData = AuthContextData & {
   post: Post;
 };
 
-export type MiddlewareFn = MiddlewareHandler<{ Bindings: undefined; Variables: PostContextData }>;
-
-const postMiddleware: MiddlewareFn = async (ctx, next) => {
+export const postMiddleware: MiddlewareHandlerFunction<PostContextData> = async (ctx, next) => {
   const postId = ctx.req.param('postId');
   if (!postId) {
     throw $error(httpStatus.NOT_FOUND, 'posts.notFound');
@@ -22,5 +20,3 @@ const postMiddleware: MiddlewareFn = async (ctx, next) => {
 
   await next();
 };
-
-export default postMiddleware;

@@ -2,16 +2,14 @@ import { $error } from '@helpers/errors.js';
 import httpStatus from '@helpers/status.js';
 import { findUserById } from '@helpers/users.js';
 import { User } from '@prisma/client';
-import { MiddlewareHandler } from 'hono';
 import { AuthContextData } from './auth.js';
+import { MiddlewareHandlerFunction } from './type.js';
 
 export type TargetContextData = AuthContextData & {
   target: User;
 };
 
-export type MiddlewareFn = MiddlewareHandler<{ Bindings: undefined; Variables: TargetContextData }>;
-
-const targetUserMiddleware: MiddlewareFn = async (ctx, next) => {
+export const targetUserMiddleware: MiddlewareHandlerFunction<TargetContextData> = async (ctx, next) => {
   const targetId = ctx.req.param('targetId');
 
   if (!targetId) {
@@ -23,5 +21,3 @@ const targetUserMiddleware: MiddlewareFn = async (ctx, next) => {
 
   await next();
 };
-
-export default targetUserMiddleware;

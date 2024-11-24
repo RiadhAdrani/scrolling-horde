@@ -1,5 +1,5 @@
 import { getMe, signin, signup } from '@controllers/users.js';
-import authMiddleware, { AuthContextData } from '@middlewares/auth.js';
+import { authMiddleware, AuthContextData } from '@middlewares/index.js';
 import { Hono } from 'hono';
 import friendships from './friendship.js';
 import followships from './followship.js';

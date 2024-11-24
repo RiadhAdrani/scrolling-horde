@@ -1,7 +1,7 @@
 import { createComment, createReply, deleteComment, editComment } from '@controllers/comments.js';
-import commentMiddleware, { CommentContextData } from '@middlewares/comment.js';
-import { PostContextData } from '@middlewares/post.js';
+import { PostContextData, commentMiddleware, CommentContextData } from '@middlewares/index.js';
 import { Hono } from 'hono';
+import { commentReactions } from './reactions.js';
 
 const comments = new Hono<{ Variables: PostContextData }>();
 comments.post('/', async ctx => ctx.json(await createComment(ctx.get('user'), ctx.get('post'), await ctx.req.json())));
@@ -16,6 +16,7 @@ replies.post('/', async ctx =>
 );
 
 comment.route('/replies', replies);
+comment.route('/reactions', commentReactions);
 comments.route('/:commentId', comment);
 
 export default comments;

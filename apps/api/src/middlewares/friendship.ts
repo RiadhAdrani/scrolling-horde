@@ -1,16 +1,19 @@
 import { $error } from '@helpers/errors.js';
+import { findFriendshipById } from '@helpers/friendship.js';
 import httpStatus from '@helpers/status.js';
 import { Friendship } from '@prisma/client';
-import { MiddlewareHandler } from 'hono';
-import { FriendshipTargetContextData } from './friendship-target.js';
+import { TargetContextData } from './target-user.js';
+import { MiddlewareHandlerFunction } from './type.js';
 
-export type FriendshipContextData = FriendshipTargetContextData & {
+export type FriendshipOptionalContextData = TargetContextData & {
+  friendship?: Friendship;
+};
+
+export type FriendshipContextData = FriendshipOptionalContextData & {
   friendship: Friendship;
 };
 
-export type MiddlewareFn = MiddlewareHandler<{ Bindings: undefined; Variables: FriendshipContextData }>;
-
-const friendshipMiddleware: MiddlewareFn = async (ctx, next) => {
+export const friendshipMiddleware: MiddlewareHandlerFunction<FriendshipContextData> = async (ctx, next) => {
   if (!ctx.get('friendship')) {
     throw $error(httpStatus.NOT_FOUND, 'friendship.notFound');
   }
@@ -18,4 +21,14 @@ const friendshipMiddleware: MiddlewareFn = async (ctx, next) => {
   await next();
 };
 
-export default friendshipMiddleware;
+export const optionalFriendshipMiddleware: MiddlewareHandlerFunction<FriendshipOptionalContextData> = async (
+  ctx,
+  next,
+) => {
+  const friendship = await findFriendshipById(ctx.get('user').id, ctx.get('target').id);
+  if (friendship) {
+    ctx.set('friendship', friendship);
+  }
+
+  await next();
+};

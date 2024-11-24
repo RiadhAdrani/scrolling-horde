@@ -74,6 +74,7 @@ model User {
   friendshipFrom Friendship[]   @relation("friendship-from")
   friendshipTo   Friendship[]   @relation("friendship-to")
   comments       Comment[]
+  reactions      Reaction[]
 }
 
 model Followship {
@@ -183,13 +184,16 @@ model Asset {
 model Reaction {
   id String @id @default(cuid())
 
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
   type ReactionType
 
   post   Post?   @relation(fields: [postId], references: [id])
   postId String?
 
-  comment    Comment? @relation(fields: [commentsId], references: [id])
-  commentsId String?
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

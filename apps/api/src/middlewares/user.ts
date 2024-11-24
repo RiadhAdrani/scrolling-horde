@@ -2,15 +2,13 @@ import { AUTHORIZATION, AUTHORIZATION_BEARER } from '@const/index.js';
 import { verifyToken } from '@helpers/tokens.js';
 import { findUserById } from '@helpers/users.js';
 import { User } from '@prisma/client';
-import { MiddlewareHandler } from 'hono';
+import { MiddlewareHandlerFunction } from './type.js';
 
 export type UserContextData = {
   user?: User;
 };
 
-export type MiddlewareFn = MiddlewareHandler<{ Bindings: undefined; Variables: UserContextData }>;
-
-const userMiddleware: MiddlewareFn = async (ctx, next) => {
+export const userMiddleware: MiddlewareHandlerFunction<UserContextData> = async (ctx, next) => {
   const bearer = ctx.req.header(AUTHORIZATION);
 
   // extract token
@@ -35,5 +33,3 @@ const userMiddleware: MiddlewareFn = async (ctx, next) => {
 
   await next();
 };
-
-export default userMiddleware;
